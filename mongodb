@@ -1,0 +1,217 @@
+//in cmd prompt
+
+test> use sowmidb         //create sowmidb database
+switched to db sowmidb
+
+
+sowmidb> db.products.insertOne({name:"Harry potter Book" , price:30.00})        //create products in db and insert
+{
+  acknowledged: true,
+  insertedId: ObjectId('66dc5b7dc54515e9532710bc')
+}
+
+
+sowmidb> db.products.insertOne({name:"one piece Book" , price:40.00 , description:"pirates"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('66dc5bbfc54515e9532710bd')
+}
+
+
+sowmidb> db.products.insertOne({name:"Life of pie Book" , price:20.00})
+{
+  acknowledged: true,
+  insertedId: ObjectId('66dc5bdac54515e9532710be')
+}
+sowmidb> db.products.findOne()                             //it finds one data
+{
+  _id: ObjectId('66dc586ba5257939422710bc'),
+  name: 'Harry Potter Book',
+  price: 30
+}
+
+
+sowmidb> db.products.find();                               //it finds all data in database sowmidb
+[
+  {
+    _id: ObjectId('66dc5b7dc54515e9532710bc'),
+    name: 'Harry potter Book',
+    price: 30
+  },
+  {
+    _id: ObjectId('66dc5bbfc54515e9532710bd'),
+    name: 'one piece Book',
+    price: 40,
+    description: 'pirates'
+  },
+  {
+    _id: ObjectId('66dc5bdac54515e9532710be'),
+    name: 'Life of pie Book',
+    price: 20
+  }
+]
+
+
+
+sowmidb> db.products.insertOne({_id:1001,name:"sowmi",email:"sowmiya@gmail.com",salary:100000});
+{ acknowledged: true, insertedId: 1001 }
+sowmidb> db.products.find();
+[
+  {
+    _id: ObjectId('66dc5b7dc54515e9532710bc'),
+    name: 'Harry potter Book',
+    price: 30
+  },
+  {
+    _id: ObjectId('66dc5bbfc54515e9532710bd'),
+    name: 'one piece Book',
+    price: 40,
+    description: 'pirates'
+  },
+  {
+    _id: ObjectId('66dc5bdac54515e9532710be'),
+    name: 'Life of pie Book',
+    price: 20
+  },
+  {
+    _id: 1001,
+    name: 'sowmi',
+    email: 'sowmiya@gmail.com',
+    salary: 100000
+  }
+]
+
+
+sowmidb>  db.products.insertOne({_id:1002,name:"bharath",email:"bharath@gmail.com",salary:200000});
+{ acknowledged: true, insertedId: 1002 }
+
+
+sowmidb>  db.products.insertOne({_id:1003,name:"pranav",email:"pranav@gmail.com",salary:200000});
+{ acknowledged: true, insertedId: 1003 }
+sowmidb>  db.products.find();
+[
+  {
+    _id: ObjectId('66dc5b7dc54515e9532710bc'),
+    name: 'Harry potter Book',
+    price: 30
+  },
+  {
+    _id: ObjectId('66dc5bbfc54515e9532710bd'),
+    name: 'one piece Book',
+    price: 40,
+    description: 'pirates'
+  },
+  {
+    _id: ObjectId('66dc5bdac54515e9532710be'),
+    name: 'Life of pie Book',
+    price: 20
+  },
+  {
+    _id: 1001,
+    name: 'sowmi',
+    email: 'sowmiya@gmail.com',
+    salary: 100000
+  },
+  {
+    _id: 1002,
+    name: 'bharath',
+    email: 'bharath@gmail.com',
+    salary: 200000
+  },
+  {
+    _id: 1003,
+    name: 'pranav',
+    email: 'pranav@gmail.com',
+    salary: 200000
+  }
+]
+
+
+
+sowmidb>  db.products.find({},{salary:1,_id:0}).sort({salary:1});
+[
+  {},
+  {},
+  {},
+  { salary: 100000 },
+  { salary: 200000 },
+  { salary: 200000 }
+]
+
+
+
+sowmidb> db.products.find({},{salary:1,_id:1}).sort({salary:1});
+[
+  { _id: ObjectId('66dc5b7dc54515e9532710bc') },
+  { _id: ObjectId('66dc5bbfc54515e9532710bd') },
+  { _id: ObjectId('66dc5bdac54515e9532710be') },
+  { _id: 1001, salary: 100000 },
+  { _id: 1002, salary: 200000 },
+  { _id: 1003, salary: 200000 }
+]
+
+
+
+sowmidb> db.products.find({},{salary:1,_id:0}).sort({id:1});
+[
+  {},
+  {},
+  {},
+  { salary: 100000 },
+  { salary: 200000 },
+  { salary: 200000 }
+]
+
+
+
+
+sowmidb>  db.products.find({},{salary:1,_id:0}).sort({id:-1});
+[
+  {},
+  {},
+  {},
+  { salary: 100000 },
+  { salary: 200000 },
+  { salary: 200000 }
+]
+
+
+//create index
+
+sowmidb> db.products.createIndex({name:1})
+name_1
+
+
+//getindex
+
+sowmidb>  db.products.getIndexes();
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+
+
+//drop index(delete)
+
+sowmidb>  db.products.dropIndexes("name_1");
+{ nIndexesWas: 2, ok: 1 }
+
+
+sowmidb>  db.products.getIndexes();
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+
+
+
+
+//regex --to search a pattern in a string
+
+sowmidb>   db.products.find({email:{$regex:"sowmiya"}}).pretty();
+[
+  {
+    _id: 1001,
+    name: 'sowmi',
+    email: 'sowmiya@gmail.com',
+    salary: 100000
+  }
+]
+
